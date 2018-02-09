@@ -1,0 +1,12 @@
+services:
+    # crud
+    shapecode_crud.crud_manager:
+        class: Shapecode\Bundle\CRUDBundle\Crud\CrudManager
+
+    shapecode_crud.action_manager:
+        class: Shapecode\Bundle\CRUDBundle\Crud\ActionManager
+        arguments: ["@service_container"]
+
+    shapecode_crud.route_provider.crud:
+        class: Shapecode\Bundle\CRUDBundle\Routing\CrudProvider
+        arguments: ['@shapecode_crud.crud_manager']
