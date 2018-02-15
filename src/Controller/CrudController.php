@@ -3,8 +3,9 @@
 namespace Shapecode\Bundle\CRUDBundle\Controller;
 
 use Shapecode\Bundle\CRUDBundle\Action\ActionInterface;
-use Shapecode\Bundle\CRUDBundle\Crud\AdminBuilderInterface;
+use Shapecode\Bundle\CRUDBundle\Crud\ActionManagerInterface;
 use Shapecode\Bundle\CRUDBundle\Crud\CrudBuilder;
+use Shapecode\Bundle\CRUDBundle\Crud\CrudManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,7 +31,7 @@ class CrudController extends Controller
 
         $crudBuilder = new CrudBuilder();
         $crudResolver = new OptionsResolver();
-        $crud = $this->get('shapecode_crud.crud_manager')->getCrud($crudName);
+        $crud = $this->getCrudManager()->getCrud($crudName);
 
         $crud->configureOptions($crudResolver);
         $crudOptions = $crudResolver->resolve();
@@ -47,7 +48,7 @@ class CrudController extends Controller
         $resolved = $resolver->resolve($options);
 
         /** @var ActionInterface $action */
-        $action = $this->get('shapecode_crud.action_manager')->getAction($className);
+        $action = $this->getActionManager()->getAction($className);
         $action->setOptions($resolved);
         $action->setRequestStack($this->container->get('request_stack'));
         $action->setContainer($this->container->get('service_container'));
@@ -55,5 +56,21 @@ class CrudController extends Controller
         $action->execute();
 
         return $action->getResponse();
+    }
+
+    /**
+     * @return object|CrudManagerInterface
+     */
+    protected function getCrudManager()
+    {
+        return $this->get('shapecode_crud.crud_manager');
+    }
+
+    /**
+     * @return object|ActionManagerInterface
+     */
+    protected function getActionManager()
+    {
+        return $this->get('shapecode_crud.action_manager');
     }
 }

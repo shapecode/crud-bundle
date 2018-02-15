@@ -40,6 +40,14 @@ class CrudBuilder implements CrudBuilderInterface
     }
 
     /**
+     * @param $name
+     */
+    public function remove($name)
+    {
+        unset($this->configurations[$name]);
+    }
+
+    /**
      * @return ActionConfiguration[]
      */
     public function all()

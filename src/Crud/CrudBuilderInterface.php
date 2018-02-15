@@ -24,4 +24,11 @@ interface CrudBuilderInterface
      * @return ActionConfiguration
      */
     public function get($name);
+
+    /**
+     * @param $name
+     *
+     * @return ActionConfiguration
+     */
+    public function remove($name);
 }

@@ -65,7 +65,7 @@ abstract class AbstractAction implements ActionInterface
     public static function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired([
-            'entity_class'
+            'entity_name'
         ]);
     }
 
@@ -106,9 +106,9 @@ abstract class AbstractAction implements ActionInterface
     /**
      * @return string
      */
-    protected function getEntityClass()
+    protected function getEntityName()
     {
-        return $this->getOption('entity_class');
+        return $this->getOption('entity_name');
     }
 
     /**
@@ -116,7 +116,7 @@ abstract class AbstractAction implements ActionInterface
      */
     protected function getRepository()
     {
-        return $this->getContainer()->get('doctrine')->getRepository($this->getEntityClass());
+        return $this->getContainer()->get('doctrine')->getRepository($this->getEntityName());
     }
 
     /**

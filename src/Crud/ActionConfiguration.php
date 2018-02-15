@@ -49,6 +49,14 @@ class ActionConfiguration
     }
 
     /**
+     * @param string $className
+     */
+    public function setClassName($className)
+    {
+        $this->className = $className;
+    }
+
+    /**
      * @param $name
      *
      * @return bool
@@ -74,5 +82,22 @@ class ActionConfiguration
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * @param array $options
+     */
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * @param $name
+     * @param $value
+     */
+    public function setOption($name, $value)
+    {
+        $this->options[$name] = $value;
     }
 }

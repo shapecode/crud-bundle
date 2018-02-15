@@ -104,7 +104,7 @@ class CrudProvider implements RouteProviderInterface
         $crud->buildCrud($builder, $resolver->resolve());
 
         foreach ($builder->all() as $configuration) {
-            $name = 'admin_control_panel_' . $crud->getName() . '_' . $configuration->getName();
+            $name = 'shapecode_crud_' . $crud->getName() . '_' . $configuration->getName();
             $routes->add($name, $this->getActionRoute($crud, $configuration));
         }
 
@@ -122,7 +122,7 @@ class CrudProvider implements RouteProviderInterface
         $name = $configuration->getName();
 
         $defaults = [
-            '_controller' => 'ShapecodeCRUDBundle:Crud:execute',
+            '_controller' => 'TenoloAdminControlPanelBundle:Admin:execute',
         ];
 
         $path = $crud->getRoute();
