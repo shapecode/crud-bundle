@@ -96,7 +96,6 @@ class CrudProvider implements RouteProviderInterface
     protected function load(AbstractCrudInterface $crud)
     {
         $routes = new RouteCollection();
-
         $builder = new CrudBuilder();
         $resolver = new OptionsResolver();
 
@@ -122,7 +121,7 @@ class CrudProvider implements RouteProviderInterface
         $name = $configuration->getName();
 
         $defaults = [
-            '_controller' => 'TenoloAdminControlPanelBundle:Admin:execute',
+            '_controller' => 'ShapecodeCRUDBundle:Crud:execute',
         ];
 
         $path = $crud->getRoute();

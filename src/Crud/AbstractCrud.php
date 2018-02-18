@@ -19,7 +19,7 @@ abstract class AbstractCrud extends BaseCrud
     public function buildCrud(CrudBuilderInterface $builder, array $options)
     {
         $builder->add('list', ListAction::class, [
-            'entity_class' => $options['entity_class']
+            'entity_name' => $options['entity_name']
         ]);
     }
 }

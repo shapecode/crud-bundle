@@ -10,3 +10,5 @@ services:
     shapecode_crud.route_provider.crud:
         class: Shapecode\Bundle\CRUDBundle\Routing\CrudProvider
         arguments: ['@shapecode_crud.crud_manager']
+        tags:
+             - { name: "tenolo_routing.route_provider.chain" }
