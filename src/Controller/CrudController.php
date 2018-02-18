@@ -3,7 +3,6 @@
 namespace Shapecode\Bundle\CRUDBundle\Controller;
 
 use Shapecode\Bundle\CRUDBundle\Cruding\ExecutionInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -12,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @package Shapecode\Bundle\CRUDBundle\Controller
  * @author  Nikita Loges
  */
-class CrudController extends Controller
+class CrudController
 {
 
     /** @var ExecutionInterface */

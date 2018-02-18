@@ -7,6 +7,7 @@ services:
 
     shapecode_crud.execution:
         class: Shapecode\Bundle\CRUDBundle\Cruding\Execution
+        public: false
         arguments:
             - '@shapecode_crud.crud_organizer'
             - '@shapecode_crud.action_manager'
@@ -16,16 +17,20 @@ services:
 
     shapecode_crud.crud_organizer:
         class: Shapecode\Bundle\CRUDBundle\Cruding\Organizer
+        public: false
 
     shapecode_crud.action_manager:
         class: Shapecode\Bundle\CRUDBundle\Cruding\ActionManager
+        public: false
         arguments: ["@service_container"]
 
     shapecode_crud.route_manager:
         class: Shapecode\Bundle\CRUDBundle\Cruding\RouteManager
+        public: false
         arguments: ["@router"]
 
     shapecode_crud.route_laoder.crud:
         class: Shapecode\Bundle\CRUDBundle\Routing\CrudLoader
+        public: false
         arguments: ['@shapecode_crud.crud_organizer']
         tags: [ routing.loader ]
