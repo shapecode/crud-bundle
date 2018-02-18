@@ -1,14 +1,14 @@
 <?php
 
-namespace Shapecode\Bundle\CRUDBundle\Crud;
+namespace Shapecode\Bundle\CRUDBundle\Cruding;
 
 /**
  * Class ActionConfiguration
  *
- * @package Shapecode\Bundle\CRUDBundle\Crud
+ * @package Shapecode\Bundle\CRUDBundle\Cruding
  * @author  Nikita Loges
  */
-class ActionConfiguration
+class ActionConfiguration implements ActionConfigurationInterface
 {
 
     /** @var string */
@@ -20,20 +20,25 @@ class ActionConfiguration
     /** @var array */
     protected $options = [];
 
+    /** @var array */
+    protected $permissions = [];
+
     /**
-     * @param string $name
-     * @param string $className
-     * @param array  $options
+     * @param       $name
+     * @param       $className
+     * @param array $options
+     * @param array $permissions
      */
-    public function __construct($name, $className, array $options = [])
+    public function __construct($name, $className, array $options = [], array $permissions = [])
     {
         $this->name = $name;
         $this->className = $className;
         $this->options = $options;
+        $this->permissions = $permissions;
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getName()
     {
@@ -41,7 +46,7 @@ class ActionConfiguration
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getClassName()
     {
@@ -49,7 +54,7 @@ class ActionConfiguration
     }
 
     /**
-     * @param string $className
+     * @inheritdoc
      */
     public function setClassName($className)
     {
@@ -57,9 +62,7 @@ class ActionConfiguration
     }
 
     /**
-     * @param $name
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function hasOption($name)
     {
@@ -67,9 +70,7 @@ class ActionConfiguration
     }
 
     /**
-     * @param $name
-     *
-     * @return mixed
+     * @inheritdoc
      */
     public function getOption($name)
     {
@@ -77,7 +78,7 @@ class ActionConfiguration
     }
 
     /**
-     * @return array
+     * @inheritdoc
      */
     public function getOptions()
     {
@@ -85,7 +86,7 @@ class ActionConfiguration
     }
 
     /**
-     * @param array $options
+     * @inheritdoc
      */
     public function setOptions(array $options)
     {
@@ -93,11 +94,18 @@ class ActionConfiguration
     }
 
     /**
-     * @param $name
-     * @param $value
+     * @inheritdoc
      */
     public function setOption($name, $value)
     {
         $this->options[$name] = $value;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getPermissions()
+    {
+        return $this->permissions;
     }
 }

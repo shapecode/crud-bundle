@@ -3,6 +3,7 @@
 namespace Shapecode\Bundle\CRUDBundle\Action;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use Shapecode\Bundle\CRUDBundle\Cruding\CrudHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,8 +33,19 @@ abstract class AbstractAction implements ActionInterface
     /** @var ContainerInterface */
     protected $container;
 
+    /** @var CrudHelperInterface */
+    protected $helper;
+
     /** @var array */
     protected $options;
+
+    /**
+     * @inheritDoc
+     */
+    public function setCrudHelper(CrudHelperInterface $crudHelper)
+    {
+        $this->helper = $crudHelper;
+    }
 
     /**
      * @param RequestStack $requestStack

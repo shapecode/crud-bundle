@@ -1,26 +1,39 @@
 <?php
 
-namespace Shapecode\Bundle\CRUDBundle\Crud;
+namespace Shapecode\Bundle\CRUDBundle\Cruding;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Shapecode\Bundle\CRUDBundle\Crud\AbstractCrudInterface;
 
 /**
- * Class CrudManager
+ * Class Manager
  *
- * @package Shapecode\Bundle\CRUDBundle\Crud
+ * @package Shapecode\Bundle\CRUDBundle\Cruding
  * @author  Nikita Loges
  */
-class CrudManager implements CrudManagerInterface
+class Manager implements ManagerInterface
 {
+
+    /** @var string */
+    protected $name;
 
     /** @var ArrayCollection|AbstractCrudInterface[] */
     protected $cruds;
 
     /**
      */
-    public function __construct()
+    public function __construct($name)
     {
+        $this->name = $name;
         $this->cruds = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

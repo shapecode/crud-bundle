@@ -21,11 +21,14 @@ class CrudCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $definition = $container->getDefinition('shapecode_crud.crud_manager');
+        $definition = $container->getDefinition('shapecode_crud.crud_organizer');
         $tags = $container->findTaggedServiceIds('shapecode_crud.crud');
 
         foreach ($tags as $id => $configs) {
-            $definition->addMethodCall('addCrud', [new Reference($id)]);
+            foreach ($configs as $config) {
+                $manager = (isset($config['manager'])) ? $config['manager'] : 'default';
+                $definition->addMethodCall('addCrud', [new Reference($id), $manager]);
+            }
         }
     }
 

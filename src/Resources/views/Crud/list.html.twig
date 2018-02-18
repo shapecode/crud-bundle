@@ -1,10 +1,179 @@
-<table>
-    <tr>
-        <th>Name</th>
-    </tr>
-    {% for o in objects %}
-        <tr>
-            <td>{{ o.id }}</td>
-        </tr>
-    {% endfor %}
-</table>
+{% extends "@ShapecodeCRUD/Crud/base_list.html.twig" %}
+
+{% block itemContent %}
+    {% if action_edit is defined and action_edit %}
+        <td><a href="{{ path(route.edit, { "id": o.id }) }}">{{ o }}</a></td>
+    {% else %}
+        <td>{{ o }}</td>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function () {
+            {# remove script, removes the line #}
+            $('.remove').on('success', function () {
+                $(this).parents('tr').remove();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block list %}
+    {{ parent() }}
+
+    {# default table block #}
+    {% block table %}
+        <table class="table table-striped table-hover">
+
+            {# table head #}
+            {% block tableHead %}
+                <thead>
+
+                {# head row #}
+                {% block tableHeadRow %}
+                    <tr>
+                        {# marker header #}
+                        {% block tableRowMarkerHeader %}
+                            {% if action_mark is defined and action_mark %}
+                                <th>
+                                    {% block tableRowMarkerAll %}
+                                        <input{% if objectsMarkedCount == objects|length %} checked="checked"{% endif %} type="checkbox" class="markAll" data-bs-title="{{ "form.list.column.markAll"|trans }}">
+                                    {% endblock %}
+                                </th>
+                            {% endif %}
+                        {% endblock %}
+
+                        {# counter header #}
+                        {% block tableRowCounterHeader %}
+                            <th>{{ 'form.list.column.header.counter'|trans }}</th>
+                        {% endblock %}
+
+                        {# id header #}
+                        {% block tableRowIdHeader %}
+                            <th>{{ knp_pagination_sortable(objects, 'form.list.column.header.id'|trans, 'p.id') }}</th>
+                        {% endblock %}
+
+                        {# label header #}
+                        {% block tableRowOptionsHeader %}
+                            <th></th>
+                        {% endblock %}
+
+                        {# sortable buttons header #}
+                        {% block tableRowSortableButtonsHeader %}
+                            {% if action_sort is defined and action_sort %}
+                                <th>{{ knp_pagination_sortable(objects, 'form.list.column.header.sort'|trans, 'p.sortOrder') }}</th>
+                            {% endif %}
+                        {% endblock %}
+
+                        {# label header #}
+                        {% block itemLabelHeader %}
+                            <th></th>
+                        {% endblock %}
+
+                        {# content header #}
+                        {% block tableRowHeader %}
+                            <th>{{ knp_pagination_sortable(objects, 'form.list.column.header.name'|trans, 'p.name') }}</th>
+                        {% endblock %}
+
+                        {# times header #}
+                        {% block tableRowTimesHeader %}
+
+                            {% block tableRowTimesHeaderCreated %}
+                                <th class="hidden-sm hidden-xs">{{ knp_pagination_sortable(objects, 'form.list.column.header.created'|trans, 'p.createdAt') }}</th>
+                            {% endblock %}
+                            {% block tableRowTimesHeaderUpdated %}
+                                <th class="hidden-sm hidden-xs">{{ knp_pagination_sortable(objects, 'form.list.column.header.updated'|trans, 'p.updatedAt') }}</th>
+                            {% endblock %}
+
+                        {% endblock %}
+
+                    </tr>
+                {% endblock %}
+
+                </thead>
+            {% endblock %}
+
+            {# table body #}
+            {% block tableBody %}
+                {% if counter is not defined %}
+                    {% set counter = 1 %}
+                {% endif %}
+
+                <tbody data-start-index="{{ counter - 1 }}">
+
+                {% for o in objects %}
+
+                    {# table row #}
+                    {% block tableRow %}
+
+                        {# row tr start #}
+                        {% block tableRowStart %}
+                            <tr id="row-{{ o.id }}" data-id="{{ o.id }}" class="{% block tableRowStartCssClass %}sortable-item{% if action_mark is defined and action_mark and o.id in app.session.get(markerName) %} info{% endif %}{% endblock %}">
+                        {% endblock %}
+
+                        {# marker column #}
+                        {% block tableRowItemMarker %}
+                            {% if action_mark is defined and action_mark %}
+                                <td style="white-space: nowrap; width: 1%;">{{ block('itemMarker') }}</td>
+                            {% endif %}
+                        {% endblock %}
+
+                        {# counter column #}
+                        {% block tableRowItemCounter %}
+                            <td style="white-space: nowrap; width: 1%;">{{ block('itemCounter') }}</td>
+                        {% endblock %}
+
+                        {# id column #}
+                        {% block tableRowItemId %}
+                            <td style="white-space: nowrap; width: 1%;">{{ block('itemId') }}</td>
+                        {% endblock %}
+
+                        {# row option column #}
+                        {% block tableRowItemOptions %}
+                            <td style="white-space: nowrap; width: 1%;">{{ block('itemOptions') }}</td>
+                        {% endblock %}
+
+                        {# sorting buttons column #}
+                        {% block tableRowItemSortingButtons %}
+                            {% if action_sort is defined and action_sort %}
+                                <td style="white-space: nowrap; width: 1%;">{{ block('itemSortingButtons') }}</td>
+                            {% endif %}
+                        {% endblock %}
+
+                        {# label column #}
+                        {% block tableRowItemLabel %}
+                            <td style="white-space: nowrap; width: 1%;">{{ block('itemLabel') }}</td>
+                        {% endblock %}
+
+                        {# content column #}
+                        {% block tableRowItemContent %}
+                            {{ block('itemContent') }}
+                        {% endblock %}
+
+                        {# times column #}
+                        {% block tableRowItemDates %}
+                            {% block itemDates %}
+                                {% block itemDateCreated %}
+                                    <td class="hidden-sm hidden-xs" style="white-space: nowrap; width: 1%;">{{ o.createdAt|date("d.m.Y H:i") }}</td>
+                                {% endblock %}
+                                {% block itemDatesUpdated %}
+                                    <td class="hidden-sm hidden-xs" style="white-space: nowrap; width: 1%;">{{ o.updatedAt|date("d.m.Y H:i") }}</td>
+                                {% endblock %}
+                            {% endblock %}
+                        {% endblock %}
+
+                        </tr>
+                    {% endblock %}
+
+                    {% set counter = counter + 1 %}
+                {% endfor %}
+
+                </tbody>
+            {% endblock %}
+
+        </table>
+    {% endblock %}
+{% endblock %}

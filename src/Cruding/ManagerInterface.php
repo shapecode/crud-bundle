@@ -1,17 +1,23 @@
 <?php
 
-namespace Shapecode\Bundle\CRUDBundle\Crud;
+namespace Shapecode\Bundle\CRUDBundle\Cruding;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Shapecode\Bundle\CRUDBundle\Crud\AbstractCrudInterface;
 
 /**
- * Interface CrudManagerInterface
+ * Interface ManagerInterface
  *
- * @package Shapecode\Bundle\CRUDBundle\Crud
+ * @package Shapecode\Bundle\CRUDBundle\Cruding
  * @author  Nikita Loges
  */
-interface CrudManagerInterface
+interface ManagerInterface
 {
+
+    /**
+     * @return string
+     */
+    public function getName();
 
     /**
      * @param AbstractCrudInterface $admin

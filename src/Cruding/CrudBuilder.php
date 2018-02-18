@@ -1,11 +1,11 @@
 <?php
 
-namespace Shapecode\Bundle\CRUDBundle\Crud;
+namespace Shapecode\Bundle\CRUDBundle\Cruding;
 
 /**
  * Class CrudBuilder
  *
- * @package Shapecode\Bundle\CRUDBundle\Crud
+ * @package Shapecode\Bundle\CRUDBundle\Cruding
  * @author  Nikita Loges
  */
 class CrudBuilder implements CrudBuilderInterface
@@ -45,6 +45,16 @@ class CrudBuilder implements CrudBuilderInterface
     public function remove($name)
     {
         unset($this->configurations[$name]);
+    }
+
+    /**
+     * @param $name
+     *
+     * @return bool
+     */
+    public function has($name)
+    {
+        return isset($this->configurations[$name]);
     }
 
     /**

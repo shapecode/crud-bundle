@@ -2,13 +2,9 @@
 
 namespace Shapecode\Bundle\CRUDBundle\Controller;
 
-use Shapecode\Bundle\CRUDBundle\Action\ActionInterface;
-use Shapecode\Bundle\CRUDBundle\Crud\ActionManagerInterface;
-use Shapecode\Bundle\CRUDBundle\Crud\CrudBuilder;
-use Shapecode\Bundle\CRUDBundle\Crud\CrudManagerInterface;
+use Shapecode\Bundle\CRUDBundle\Cruding\ExecutionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class CrudController
@@ -19,6 +15,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class CrudController extends Controller
 {
 
+    /** @var ExecutionInterface */
+    protected $execution;
+
+    /**
+     * @param ExecutionInterface $execution
+     */
+    public function __construct(ExecutionInterface $execution)
+    {
+        $this->execution = $execution;
+    }
+
     /**
      * @param Request $request
      *
@@ -26,51 +33,6 @@ class CrudController extends Controller
      */
     public function executeAction(Request $request)
     {
-        $crudName = $request->get('_crud_name');
-        $actionName = $request->get('_action_name');
-
-        $crudBuilder = new CrudBuilder();
-        $crudResolver = new OptionsResolver();
-        $crud = $this->getCrudManager()->getCrud($crudName);
-
-        $crud->configureOptions($crudResolver);
-        $crudOptions = $crudResolver->resolve();
-        $crud->buildCrud($crudBuilder, $crudOptions);
-
-        $configuration = $crudBuilder->get($actionName);
-
-        $className = $configuration->getClassName();
-        $options = $configuration->getOptions();
-
-        $resolver = new OptionsResolver();
-        call_user_func_array([$className, 'configureOptions'], [$resolver]);
-
-        $resolved = $resolver->resolve($options);
-
-        /** @var ActionInterface $action */
-        $action = $this->getActionManager()->getAction($className);
-        $action->setOptions($resolved);
-        $action->setRequestStack($this->container->get('request_stack'));
-        $action->setContainer($this->container->get('service_container'));
-
-        $action->execute();
-
-        return $action->getResponse();
-    }
-
-    /**
-     * @return object|CrudManagerInterface
-     */
-    protected function getCrudManager()
-    {
-        return $this->get('shapecode_crud.crud_manager');
-    }
-
-    /**
-     * @return object|ActionManagerInterface
-     */
-    protected function getActionManager()
-    {
-        return $this->get('shapecode_crud.action_manager');
+        return $this->execution->execute($request);
     }
 }

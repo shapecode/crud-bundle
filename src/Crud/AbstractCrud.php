@@ -3,6 +3,7 @@
 namespace Shapecode\Bundle\CRUDBundle\Crud;
 
 use Shapecode\Bundle\CRUDBundle\Action\ListAction;
+use Shapecode\Bundle\CRUDBundle\Cruding\CrudBuilderInterface;
 
 /**
  * Class AbstractCrud

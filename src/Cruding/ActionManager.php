@@ -1,6 +1,6 @@
 <?php
 
-namespace Shapecode\Bundle\CRUDBundle\Crud;
+namespace Shapecode\Bundle\CRUDBundle\Cruding;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Class ActionManager
  *
- * @package Shapecode\Bundle\CRUDBundle\Crud
+ * @package Shapecode\Bundle\CRUDBundle\Cruding
  * @author  Nikita Loges
  */
 class ActionManager implements ActionManagerInterface

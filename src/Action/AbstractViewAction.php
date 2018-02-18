@@ -41,7 +41,9 @@ abstract class AbstractViewAction extends AbstractAction implements ViewActionIn
      */
     public function getTemplateParameters()
     {
-        return $this->templateParameters;
+        return array_replace_recursive($this->templateParameters, [
+            'crud' => $this->helper
+        ]);
     }
 
     /**

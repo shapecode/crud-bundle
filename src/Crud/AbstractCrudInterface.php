@@ -2,6 +2,7 @@
 
 namespace Shapecode\Bundle\CRUDBundle\Crud;
 
+use Shapecode\Bundle\CRUDBundle\Cruding\CrudBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

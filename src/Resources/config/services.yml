@@ -1,14 +1,31 @@
 services:
     # crud
-    shapecode_crud.crud_manager:
-        class: Shapecode\Bundle\CRUDBundle\Crud\CrudManager
+    shapecode_crud.controller:
+        class: Shapecode\Bundle\CRUDBundle\Controller\CrudController
+        arguments:
+            - '@shapecode_crud.execution'
+
+    shapecode_crud.execution:
+        class: Shapecode\Bundle\CRUDBundle\Cruding\Execution
+        arguments:
+            - '@shapecode_crud.crud_organizer'
+            - '@shapecode_crud.action_manager'
+            - '@shapecode_crud.route_manager'
+            - '@request_stack'
+            - '@service_container'
+
+    shapecode_crud.crud_organizer:
+        class: Shapecode\Bundle\CRUDBundle\Cruding\Organizer
 
     shapecode_crud.action_manager:
-        class: Shapecode\Bundle\CRUDBundle\Crud\ActionManager
+        class: Shapecode\Bundle\CRUDBundle\Cruding\ActionManager
         arguments: ["@service_container"]
 
-    shapecode_crud.route_provider.crud:
-        class: Shapecode\Bundle\CRUDBundle\Routing\CrudProvider
-        arguments: ['@shapecode_crud.crud_manager']
-        tags:
-             - { name: "tenolo_routing.route_provider.chain" }
+    shapecode_crud.route_manager:
+        class: Shapecode\Bundle\CRUDBundle\Cruding\RouteManager
+        arguments: ["@router"]
+
+    shapecode_crud.route_laoder.crud:
+        class: Shapecode\Bundle\CRUDBundle\Routing\CrudLoader
+        arguments: ['@shapecode_crud.crud_organizer']
+        tags: [ routing.loader ]

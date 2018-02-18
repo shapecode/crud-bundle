@@ -1,11 +1,11 @@
 <?php
 
-namespace Shapecode\Bundle\CRUDBundle\Crud;
+namespace Shapecode\Bundle\CRUDBundle\Cruding;
 
 /**
  * Interface CrudBuilderInterface
  *
- * @package Shapecode\Bundle\CRUDBundle\Crud
+ * @package Shapecode\Bundle\CRUDBundle\Cruding
  * @author  Nikita Loges
  */
 interface CrudBuilderInterface
@@ -24,6 +24,13 @@ interface CrudBuilderInterface
      * @return ActionConfiguration
      */
     public function get($name);
+
+    /**
+     * @param $name
+     *
+     * @return bool
+     */
+    public function has($name);
 
     /**
      * @param $name

@@ -2,6 +2,7 @@
 
 namespace Shapecode\Bundle\CRUDBundle\Action;
 
+use Shapecode\Bundle\CRUDBundle\Cruding\CrudHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 interface ActionInterface
 {
+
+    /**
+     * @param CrudHelperInterface $crudHelper
+     */
+    public function setCrudHelper(CrudHelperInterface $crudHelper);
 
     /**
      * @param RequestStack $requestStack
