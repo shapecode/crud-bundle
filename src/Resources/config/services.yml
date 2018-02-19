@@ -34,3 +34,9 @@ services:
         public: false
         arguments: ['@shapecode_crud.crud_organizer']
         tags: [ routing.loader ]
+
+    shapecode_crud.twig_extension.crud:
+        class: Shapecode\Bundle\CRUDBundle\Twig\CRUDExtension
+        public: false
+        arguments: ['@translator']
+        tags: [ twig.extension ]

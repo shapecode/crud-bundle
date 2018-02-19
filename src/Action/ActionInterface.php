@@ -55,4 +55,12 @@ interface ActionInterface
      * @return string
      */
     public static function getRoute();
+
+    /**
+     * @param array $params
+     * @param array $options
+     *
+     * @return array
+     */
+    public static function getRouteFormattedParams(array $params, array $options = []);
 }

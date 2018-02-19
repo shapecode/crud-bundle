@@ -1,8 +1,8 @@
 {% extends "@ShapecodeCRUD/Crud/base_list.html.twig" %}
 
 {% block itemContent %}
-    {% if action_edit is defined and action_edit %}
-        <td><a href="{{ path(route.edit, { "id": o.id }) }}">{{ o }}</a></td>
+    {% if crud_can_view(crud, 'edit') %}
+        <td><a href="{{ crud_route(crud, 'edit', { "object": o }) }}">{{ o }}</a></td>
     {% else %}
         <td>{{ o }}</td>
     {% endif %}
@@ -37,7 +37,7 @@
                     <tr>
                         {# marker header #}
                         {% block tableRowMarkerHeader %}
-                            {% if action_mark is defined and action_mark %}
+                            {% if crud_can_view(crud, 'mark') %}
                                 <th>
                                     {% block tableRowMarkerAll %}
                                         <input{% if objectsMarkedCount == objects|length %} checked="checked"{% endif %} type="checkbox" class="markAll" data-bs-title="{{ "form.list.column.markAll"|trans }}">
@@ -63,7 +63,7 @@
 
                         {# sortable buttons header #}
                         {% block tableRowSortableButtonsHeader %}
-                            {% if action_sort is defined and action_sort %}
+                            {% if crud_can_view(crud, 'sort') %}
                                 <th>{{ knp_pagination_sortable(objects, 'form.list.column.header.sort'|trans, 'p.sortOrder') }}</th>
                             {% endif %}
                         {% endblock %}

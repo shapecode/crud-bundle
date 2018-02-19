@@ -27,7 +27,7 @@ class RouteManager implements RouteManagerInterface
 
     /**
      * @param ActionConfiguration   $action
-     * @param ManagerInterface  $manager
+     * @param ManagerInterface      $manager
      * @param AbstractCrudInterface $crud
      *
      * @return string
@@ -44,7 +44,7 @@ class RouteManager implements RouteManagerInterface
 
     /**
      * @param ActionConfiguration   $action
-     * @param ManagerInterface  $manager
+     * @param ManagerInterface      $manager
      * @param AbstractCrudInterface $crud
      * @param array                 $params
      *
@@ -53,6 +53,10 @@ class RouteManager implements RouteManagerInterface
     public function generateRouteUrl(ActionConfiguration $action, ManagerInterface $manager, AbstractCrudInterface $crud, array $params = [])
     {
         $routeName = $this->generateRouteName($action, $manager, $crud);
+
+        $actionClassName = $action->getClassName();
+
+        $params = call_user_func_array([$actionClassName, 'getRouteFormattedParams'], [$params, $action->getResolved()]);
 
         return $this->router->generate($routeName, $params);
     }

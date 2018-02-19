@@ -93,6 +93,10 @@ abstract class AbstractViewAction extends AbstractAction implements ViewActionIn
      */
     public function getResponse()
     {
+        if (!is_null($this->response)) {
+            return $this->response;
+        }
+
         return $this->render();
     }
 }

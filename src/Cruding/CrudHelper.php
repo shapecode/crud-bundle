@@ -39,11 +39,17 @@ class CrudHelper implements CrudHelperInterface
         $this->routeManager = $routeManager;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function hasAction($name)
     {
         return $this->builder->has($name);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function hasPermission($name)
     {
         if (!$this->hasAction($name)) {
@@ -61,10 +67,7 @@ class CrudHelper implements CrudHelperInterface
     }
 
     /**
-     * @param       $name
-     * @param array $params
-     *
-     * @return string
+     * @inheritdoc
      */
     public function generateUrl($name, array $params = [])
     {
@@ -73,13 +76,16 @@ class CrudHelper implements CrudHelperInterface
         return $this->routeManager->generateRouteUrl($action, $this->manager, $this->crud, $params);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getAction($name)
     {
         return $this->builder->get($name);
     }
 
     /**
-     * @return ManagerInterface
+     * @inheritdoc
      */
     public function getManager()
     {
@@ -87,7 +93,7 @@ class CrudHelper implements CrudHelperInterface
     }
 
     /**
-     * @return AbstractCrudInterface
+     * @inheritdoc
      */
     public function getCrud()
     {

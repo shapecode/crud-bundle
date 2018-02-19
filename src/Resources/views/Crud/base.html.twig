@@ -1,1 +1,81 @@
 {% extends "@ShapecodeCRUD/layout.html.twig" %}
+
+{# vars #}
+{% if pageNavigationLeftColWidth is not defined %}
+    {% set pageNavigationLeftColWidth = 9 %}
+{% endif %}
+{% if pageNavigationRightColWidth is not defined %}
+    {% set pageNavigationRightColWidth = 3 %}
+{% endif %}
+
+{# global list headline #}
+{% block contentHeaderHeadline %}
+    {% spaceless %}
+        {# icon #}
+        {% block contentHeaderHeadlineIcon %}
+            {% if icon is defined %}
+                {{ fa(icon) }}
+            {% endif %}
+        {% endblock %}
+
+        {# name #}
+        {% block contentHeaderHeadlineEntity %}
+            {% if wording is defined %}
+                {{ wording.object.singular|trans({}, 'entities') }}
+            {% endif %}
+        {% endblock %}
+
+        {# action #}
+        {% block contentHeaderHeadlineAction %}{% endblock %}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block pageNavigationLeftButtons %}{% endblock %}
+{% block pageNavigationRightButtons %}{% endblock %}
+
+{% block pageNavigationWrapper %}
+    {% set pageNavigationLeftButtons = block('pageNavigationLeftButtons')|trim %}
+    {% set pageNavigationRightButtons = block('pageNavigationRightButtons')|trim %}
+
+    {% if pageNavigationLeftButtons is not empty or pageNavigationRightButtons is not empty %}
+        <div class="row">
+            {# page navigation #}
+            {% block pageNavigation %}
+                {# page navigation left #}
+                {% block pageNavigationLeft %}
+                    <div class="col-sm-{{ pageNavigationLeftColWidth }}">
+                        {# page navigation left buttons #}
+                        {{ pageNavigationLeftButtons|raw }}
+                    </div>
+                {% endblock %}
+
+                {# page navigation right #}
+                {% block pageNavigationRight %}
+                    <div class="col-sm-{{ pageNavigationRightColWidth }} text-right">
+                        {# page navigation left buttons #}
+                        {{ pageNavigationRightButtons|raw }}
+                    </div>
+                {% endblock %}
+            {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% set pageNavigationWrapper = block('pageNavigationWrapper')|trim %}
+
+    {% if pageNavigationWrapper is not empty %}
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="well well-sm">
+                    {{ pageNavigationWrapper|raw }}
+                </div>
+
+                <hr>
+            </div>
+        </div>
+    {% endif %}
+
+    {{ parent() }}
+{% endblock %}

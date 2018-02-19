@@ -9,31 +9,31 @@
     {#{% include '@TenoloAdminControlPanel/List/marker.js.twig' %}#}
 
     {#{% if (filterable is defined and filterable) %}#}
-        {#<script type="text/javascript">#}
-            {#$(function () {#}
-                {#var toogleSidebar = function () {#}
-                    {#$('.list-content').toggleClass('col-md-12 col-md-9');#}
-                    {#$('.list-sidebar').toggle();#}
-                    {#$('.btn-filter').toggleClass('active');#}
-                {#};#}
+    {#<script type="text/javascript">#}
+    {#$(function () {#}
+    {#var toogleSidebar = function () {#}
+    {#$('.list-content').toggleClass('col-md-12 col-md-9');#}
+    {#$('.list-sidebar').toggle();#}
+    {#$('.btn-filter').toggleClass('active');#}
+    {#};#}
 
-                {#$('.btn-filter').on('click', toogleSidebar);#}
+    {#$('.btn-filter').on('click', toogleSidebar);#}
 
-                {#{% if filter.vars.submitted %}#}
-                {#toogleSidebar();#}
-                {#{% endif %}#}
-            {#});#}
-        {#</script>#}
+    {#{% if filter.vars.submitted %}#}
+    {#toogleSidebar();#}
+    {#{% endif %}#}
+    {#});#}
+    {#</script>#}
     {#{% endif %}#}
 {% endblock %}
 
 {# @inheritdoc #}
 {% block contentHeaderHeadlineEntity %}
-    {% if wording.object.plural is defined %}
-        {{ wording.object.plural|trans({}, 'entities') }}
-    {% else %}
-        {{ 'form.list.items'|trans }}
-    {% endif %}
+    {#{% if wording.object.plural is defined %}#}
+    {#{{ wording.object.plural|trans({}, 'entities') }}#}
+    {#{% else %}#}
+    {{ 'form.list.items'|trans }}
+    {#{% endif %}#}
 {% endblock %}
 
 {# @inheritdoc #}
@@ -43,9 +43,9 @@
 
 {% block pageNavigationObjectButtons %}
     {% block pageNavigationButtonAddObjectWrapper %}
-        {% if action_add is defined and action_add %}
+        {% if crud_can_view(crud, 'add') %}
             {% block pageNavigationButtonAddObject %}
-                <a href="{{ path(route.add) }}" class="btn btn-primary">{{ fa('plus') }} {{ wording.object.singular|trans({}, 'entities') }} {{ 'action.add'|trans }}</a>
+                <a href="{{ crud_route(crud, 'add') }}" class="btn btn-primary">{{ fa('plus') }} {{ 'action.add'|trans }}</a>
             {% endblock %}
         {% endif %}
     {% endblock %}
@@ -67,21 +67,11 @@
 {# action items #}
 {% block markedEntitiesActionButtons %}
     {% spaceless %}
-        {% if action_remove is defined and action_remove %}
+        {% if crud_can_view(crud, 'marked_remove') %}
             {% block markedEntitiesActionButtonRemove %}
                 <li class="dropdown-header">{{ "action.remove"|trans|capitalize }}</li>
                 <li>
-                    <a href="{{ path(route.markedRemove) }}" class="confirm" data-confirm-text="{{ "form.list.marked.remove"|trans({ "%objects%": wording.object.plural|trans({}, 'entities') }) }}">{{ "action.remove"|trans|capitalize }}</a>
-                </li>
-            {% endblock %}
-        {% endif %}
-        {% if action_export is defined and action_export and action_export_available_formats is defined %}
-            {% block markedEntitiesActionButtonExport %}
-                <li class="dropdown-header">{{ "action.export"|trans|capitalize }}</li>
-                <li>
-                    {% for export_format in action_export_available_formats %}
-                        <a href="{{ path(route.markedExport, { export_format: export_format }) }}">Als {{ export_format }} exportieren</a>
-                    {% endfor %}
+                    <a href="{{ crud_route(crud, 'marked_remove') }}" class="confirm" data-confirm-text="{{ "form.list.marked.remove"|trans({ "%objects%": wording.object.plural|trans({}, 'entities') }) }}">{{ "action.remove"|trans|capitalize }}</a>
                 </li>
             {% endblock %}
         {% endif %}
@@ -114,7 +104,7 @@
                     </div>
 
                     {% set markedEntitiesActionButtons = block('markedEntitiesActionButtons') %}
-                    {% if objects|length > 0 and action_mark is defined and action_mark and markedEntitiesActionButtons|trim is not empty %}
+                    {% if objects|length > 0 and crud_can_view(crud, 'mark') and markedEntitiesActionButtons|trim is not empty %}
                         <div class="btn-group">
                             {# dropdown button #}
                             {% block markedEntitiesActionButton %}
@@ -267,15 +257,11 @@
 {% block itemId %}{{ badge(o.id) }}{% endblock %}
 {% block itemCounter %}{{ badge(counter) }}{% endblock %}
 {% block itemMarker %}
-    {% if action_mark is defined and action_mark %}
+    {% if crud_can_view(crud, 'mark') %}
         <input type="checkbox" data-bs-title="{{ 'form.list.row.mark'|trans }}" id="mark-{{ o.id }}" data-id="{{ o.id }}" data-mark-href="{{ path(route.mark, { "id": o.id }) }}" data-unmark-href="{{ path(route.unmark, { "id": o.id }) }}" class="marker"{% if o.id in app.session.get(markerName) %} checked="checked"{% endif %}>
     {% endif %}
 {% endblock %}
-{% block itemContent %}
-    {% block itemContentName %}
-        <td><a href="{{ path(route.edit, { "id": o.id }) }}">{{ o.name }}</a></td>
-    {% endblock %}
-{% endblock %}
+{% block itemContent %}{% endblock %}
 {% block itemLabel %}{% endblock %}
 {% block itemDates %}{% endblock %}
 
@@ -284,14 +270,14 @@
     <div class="btn-group">
         {% block itemOptionButtons %}
             {% block itemOptionButtonEdit %}
-                {% if action_edit is defined and action_edit %}
-                    <a class="btn btn-xs btn-black" data-bs-title="{{ 'action.edit'|trans|capitalize }}" href="{{ path(route.edit, { "id": o.id }) }}">{{ fa('pencil') }}</a>
+                {% if crud_can_view(crud, 'edit') %}
+                    <a class="btn btn-xs btn-black" data-bs-title="{{ 'action.edit'|trans|capitalize }}" href="{{ crud_route(crud, 'edit', { "object": o }) }}">{{ fa('pencil') }}</a>
                 {% endif %}
             {% endblock %}
 
             {% block itemOptionButtonRemove %}
-                {% if action_remove is defined and action_remove %}
-                    <a class="btn btn-xs btn-danger ajax-confirm remove" data-method="DELETE" data-confirm-text="{{ 'form.list.row.remove'|trans({ "%article%": wording.article.singular|trans({}, 'messages'), "%object%": wording.object.singular|trans({}, 'entities') }) }}" data-bs-title="{{ 'action.remove'|trans|capitalize }}" href="{{ path(route.remove, { "id": o.id }) }}">{{ fa('trash-o') }}</a>
+                {% if crud_can_view(crud, 'remove') %}
+                    <a class="btn btn-xs btn-danger remove" href="{{ crud_route(crud, 'remove', { "object": o }) }}">{{ fa('trash-o') }}</a>
                 {% endif %}
             {% endblock %}
 
@@ -319,17 +305,13 @@
 
 {% endblock %}
 {% block itemSortingButtons %}
-    {% if action_sort %}
+    {% if crud_can_view(crud, 'sort') %}
         <div class="btn-group">
-            {#{% if o.sortOrder > 0 %}#}
-                <a class="btn btn-xs btn-info" data-bs-title="{{ 'form.list.sort.first'|trans }}" href="{{ path(route.sortTop, { "id": o.id }) }}">{{ fa('angle-double-up') }}</a>
-                <a class="btn btn-xs btn-primary" data-bs-title="{{ 'form.list.sort.up'|trans }}" href="{{ path(route.sortUp, { "id": o.id }) }}">{{ fa('angle-up') }}</a>
-            {#{% endif %}#}
+            <a class="btn btn-xs btn-info" data-bs-title="{{ 'form.list.sort.first'|trans }}" href="{{ crud_route(crud, 'sort', { "object": o, sort: 'top' }) }}">{{ fa('angle-double-up') }}</a>
+            <a class="btn btn-xs btn-primary" data-bs-title="{{ 'form.list.sort.up'|trans }}" href="{{ crud_route(crud, 'sort', { "object": o, sort: 'up' }) }}">{{ fa('angle-up') }}</a>
             <span class="btn btn-xs btn-black" data-bs-title="{{ 'form.list.sort.position'|trans }}">{{ o.sortOrder|default(0) }}</span>
-            {#{% if (o.sortOrder + 1) < objects.getTotalItemCount %}#}
-                <a class="btn btn-xs btn-primary" data-bs-title="{{ 'form.list.sort.down'|trans }}" href="{{ path(route.sortDown, { "id": o.id }) }}">{{ fa('angle-down') }}</a>
-                <a class="btn btn-xs btn-info" data-bs-title="{{ 'form.list.sort.last'|trans }}" href="{{ path(route.sortLast, { "id": o.id }) }}">{{ fa('angle-double-down') }}</a>
-            {#{% endif %}#}
+            <a class="btn btn-xs btn-primary" data-bs-title="{{ 'form.list.sort.down'|trans }}" href="{{ crud_route(crud, 'sort', { "object": o, sort: 'down' }) }}">{{ fa('angle-down') }}</a>
+            <a class="btn btn-xs btn-info" data-bs-title="{{ 'form.list.sort.last'|trans }}" href="{{ crud_route(crud, 'sort', { "object": o, sort: 'last' }) }}">{{ fa('angle-double-down') }}</a>
         </div>
     {% endif %}
 {% endblock %}

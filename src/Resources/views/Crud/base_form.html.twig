@@ -1,0 +1,79 @@
+{#
+ # @package Form
+ # @author Nikita Loges
+ # @company tenolo GbR
+ #}
+
+{# template extend #}
+{% extends "@ShapecodeCRUD/Crud/base.html.twig" %}
+
+{% block buttons %}
+    {% if form.buttons is defined %}
+        <div class="well well-sm form-buttons" style="margin-bottom: 0px;">
+            <div class="btn-group">
+                {{ form_widget(form.buttons) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% set buttons = block('buttons') %}
+
+{# form footer, buttons #}
+{% block formFooter %}
+    {% block formFooterButtonsWrapper %}
+        <div class="row row-buffer-2x">
+            <div class="col-md-12">
+                {% block formFooterButtons %}
+                    {{ buttons|raw }}
+                {% endblock %}
+            </div>
+        </div>
+    {% endblock %}
+{% endblock %}
+
+{# add content #}
+{% block content %}
+
+    {{ parent() }}
+
+    {# form open #}
+    {% block formStart %}
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate' }}) }}
+    {% endblock %}
+
+    {# form header #}
+    {% block formHeader %}
+        {% block formHeaderButtonsWrapper %}
+            <div class="row row-buffer-2x">
+                <div class="col-md-12">
+                    {% block formHeaderButtons %}
+                        {{ buttons|raw }}
+                    {% endblock %}
+                </div>
+            </div>
+        {% endblock %}
+    {% endblock %}
+
+    {% set formFooter = block('formFooter') %}
+
+    {# form content. has to be defined by child template #}
+    {% block formContent %}
+        {{ form_row(form) }}
+    {% endblock %}
+
+    {{ formFooter|raw }}
+
+    {# hide rest of the form #}
+    {% block formHidden %}
+        <div style="display: none;">
+            {{ form_rest(form) }}
+        </div>
+    {% endblock %}
+
+    {# form close #}
+    {% block formEnd %}
+        {{ form_end(form) }}
+    {% endblock %}
+
+{% endblock %}

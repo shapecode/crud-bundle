@@ -2,6 +2,8 @@
 
 namespace Shapecode\Bundle\CRUDBundle\Cruding;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
 /**
  * Class ActionConfiguration
  *
@@ -16,6 +18,12 @@ class ActionConfiguration implements ActionConfigurationInterface
 
     /** @var string */
     protected $className;
+
+    /** @var OptionsResolver|null */
+    protected $resolver;
+
+    /** @var array|null */
+    protected $resolved;
 
     /** @var array */
     protected $options = [];
@@ -107,5 +115,32 @@ class ActionConfiguration implements ActionConfigurationInterface
     public function getPermissions()
     {
         return $this->permissions;
+    }
+
+    /**
+     * @return null|OptionsResolver
+     */
+    public function getResolver()
+    {
+        if (is_null($this->resolver)) {
+            $resolver = new OptionsResolver();
+            call_user_func_array([$this->getClassName(), 'configureOptions'], [$resolver]);
+
+            $this->resolver = $resolver;
+        }
+
+        return $this->resolver;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getResolved()
+    {
+        if (is_null($this->resolved)) {
+            $this->resolved = $this->getResolver()->resolve($this->getOptions());
+        }
+
+        return $this->resolved;
     }
 }

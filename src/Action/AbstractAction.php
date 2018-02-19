@@ -27,6 +27,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 abstract class AbstractAction implements ActionInterface
 {
 
+    /** @var null|Response */
+    protected $response;
+
     /** @var RequestStack */
     protected $requestStack;
 
@@ -90,6 +93,14 @@ abstract class AbstractAction implements ActionInterface
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
      * @return ContainerInterface
      */
     protected function getContainer()
@@ -121,6 +132,14 @@ abstract class AbstractAction implements ActionInterface
     protected function getEntityName()
     {
         return $this->getOption('entity_name');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public static function getRouteFormattedParams(array $params, array $options = [])
+    {
+        return $params;
     }
 
     /**

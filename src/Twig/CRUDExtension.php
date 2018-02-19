@@ -2,9 +2,8 @@
 
 namespace Shapecode\Bundle\CRUDBundle\Twig;
 
-use Shapecode\Bundle\CRUDBundle\CRUD\Configurator\Configurator;
+use Shapecode\Bundle\CRUDBundle\Cruding\CrudHelperInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 
@@ -20,17 +19,12 @@ class CRUDExtension extends AbstractExtension
     /** @var  TranslatorInterface */
     protected $translator;
 
-    /** @var string */
-    protected $crudLayoutTemplate;
-
     /**
      * @param TranslatorInterface $translator
-     * @param string              $crudLayoutTemplate
      */
-    public function __construct(TranslatorInterface $translator, $crudLayoutTemplate)
+    public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
-        $this->crudLayoutTemplate = $crudLayoutTemplate;
     }
 
     /**
@@ -50,80 +44,79 @@ class CRUDExtension extends AbstractExtension
     }
 
     /**
-     * @param Configurator $configurator
-     * @param              $name
+     * @param CrudHelperInterface $helper
+     * @param                     $name
      *
      * @return boolean
      */
-    public function hasAction(Configurator $configurator, $name)
+    public function hasAction(CrudHelperInterface $helper, $name)
     {
-        return $configurator->hasAction($name);
+        return $helper->hasAction($name);
     }
 
     /**
-     * @param Configurator $configurator
-     * @param              $name
+     * @param CrudHelperInterface $helper
+     * @param                     $name
      *
      * @return boolean
      */
-    public function hasPermission(Configurator $configurator, $name)
+    public function hasPermission(CrudHelperInterface $helper, $name)
     {
-        return $configurator->hasPermission($name);
+        return $helper->hasPermission($name);
     }
 
     /**
-     * @param Configurator $configurator
-     * @param              $name
+     * @param CrudHelperInterface $helper
+     * @param                     $name
      *
      * @return boolean
      */
-    public function canView(Configurator $configurator, $name)
+    public function canView(CrudHelperInterface $helper, $name)
     {
-        return ($configurator->hasAction($name) && $configurator->hasPermission($name));
+        return ($helper->hasAction($name) && $helper->hasPermission($name));
     }
 
     /**
-     * @param Configurator $configurator
+     * @param CrudHelperInterface $helper
      *
      * @return boolean
      */
-    public function currentAction(Configurator $configurator)
+    public function currentAction(CrudHelperInterface $helper)
     {
-        return $configurator->getCurrentAction();
+        return $helper->getCurrentAction();
     }
 
     /**
-     * @param Configurator $configurator
-     * @param              $name
-     * @param array        $parameters
-     * @param int          $referenceType
+     * @param CrudHelperInterface $helper
+     * @param                     $name
+     * @param array               $parameters
      *
      * @return string
      */
-    public function getRoute(Configurator $configurator, $name, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function getRoute(CrudHelperInterface $helper, $name, $parameters = [])
     {
-        return $configurator->getRouteUrl($name, $parameters, $referenceType);
+        return $helper->generateUrl($name, $parameters);
     }
 
     /**
-     * @param Configurator $configurator
-     * @param              $name
+     * @param CrudHelperInterface $helper
+     * @param                     $name
      *
      * @return string
      */
-    public function getRouteName(Configurator $configurator, $name)
+    public function getRouteName(CrudHelperInterface $helper, $name)
     {
-        return $configurator->getRouteName($name);
+        return $helper->getRouteName($name);
     }
 
     /**
-     * @param Configurator $configurator
-     * @param              $name
-     * @param array        $options
+     * @param CrudHelperInterface $helper
+     * @param                     $name
+     * @param array               $options
      *
      * @return string
      */
-    public function getWording(Configurator $configurator, $name, array $options = [])
+    public function getWording(CrudHelperInterface $helper, $name, array $options = [])
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -138,7 +131,7 @@ class CRUDExtension extends AbstractExtension
 
         $options = $resolver->resolve($options);
 
-        return $this->translator->trans($configurator->getWording()->get($name), $options['parameters'], $options['domain'], $options['locale']);
+        return $this->translator->trans($helper->getWording()->get($name), $options['parameters'], $options['domain'], $options['locale']);
     }
 
 }

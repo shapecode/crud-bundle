@@ -1,0 +1,16 @@
+{% extends "@ShapecodeCRUD/Crud/add.html.twig" %}
+
+{# @inheritdoc #}
+{% block contentHeaderHeadlineAction %}
+    {{ 'action.edit'|trans }}
+{% endblock %}
+
+{% block pageNavigationObjectButtons %}
+    {{ parent() }}
+
+    {% block pageNavigationButtonAddObject %}
+        {% if crud_can_view(crud, 'add') %}
+            <a href="{{ crud_route(crud, 'add') }}" class="btn btn-primary">{{ fa('plus') }} {{ 'action.add'|trans }}</a>
+        {% endif %}
+    {% endblock %}
+{% endblock %}

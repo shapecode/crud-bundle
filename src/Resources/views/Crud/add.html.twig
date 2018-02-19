@@ -1,0 +1,40 @@
+{% extends "@ShapecodeCRUD/Crud/base_form.html.twig" %}
+
+{# @inheritdoc #}
+{% block contentHeaderHeadlineAction %}
+    {{ 'action.add'|trans }}
+{% endblock %}
+
+{% block pageNavigationObjectButtons %}
+    {% block pageNavigationButtonListObjects %}
+        {% if crud_can_view(crud, 'list') %}
+            <a href="{{ crud_route(crud, 'list') }}" class="btn btn-default">{{ fa('bars') }} {{ 'action.list'|trans }}</a>
+        {% endif %}
+    {% endblock %}
+{% endblock %}
+
+{# @inheritdoc #}
+{% block pageNavigationLeftButtons %}
+    {{ parent() }}
+
+    {% set pageNavigationObjectButtons = block('pageNavigationObjectButtons')|trim %}
+
+    {% if pageNavigationObjectButtons is not empty %}
+        <div class="btn-group">
+            {{ pageNavigationObjectButtons|raw }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{# @inheritdoc #}
+{% block pageNavigationRightButtons %}
+    {{ parent() }}
+
+    <div class="btn-group">
+        {% block pageNavigationButtonCancel %}
+            {% if crud_can_view(crud, 'list') %}
+                <a href="{{ crud_route(crud, 'list') }}" class="btn btn-danger">{{ fa('ban') }} {{ 'action.cancel'|trans|capitalize }}</a>
+            {% endif %}
+        {% endblock %}
+    </div>
+{% endblock %}
