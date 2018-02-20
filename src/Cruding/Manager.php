@@ -17,19 +17,25 @@ class Manager implements ManagerInterface
     /** @var string */
     protected $name;
 
+    /** @var array */
+    protected $options;
+
     /** @var ArrayCollection|AbstractCrudInterface[] */
     protected $cruds;
 
     /**
+     * @param       $name
+     * @param array $options
      */
-    public function __construct($name)
+    public function __construct($name, array $options = [])
     {
         $this->name = $name;
+        $this->options = $options;
         $this->cruds = new ArrayCollection();
     }
 
     /**
-     * @return string
+     * @inheritdoc
      */
     public function getName()
     {
@@ -37,7 +43,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @param AbstractCrudInterface $admin
+     * @inheritdoc
      */
     public function addCrud(AbstractCrudInterface $admin)
     {
@@ -45,9 +51,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @param $name
-     *
-     * @return AbstractCrudInterface
+     * @inheritdoc
      */
     public function getCrud($name)
     {
@@ -55,10 +59,18 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * @return ArrayCollection|AbstractCrudInterface[]
+     * @inheritdoc
      */
     public function getCruds()
     {
         return $this->cruds;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getOption($name)
+    {
+        return $this->options[$name];
     }
 }

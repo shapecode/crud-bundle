@@ -15,9 +15,16 @@ services:
             - '@request_stack'
             - '@service_container'
 
+    shapecode_crud.manager_factory:
+        class: Shapecode\Bundle\CRUDBundle\Factory\ManagerFactory
+        public: false
+        arguments: ["@service_container"]
+
     shapecode_crud.crud_organizer:
         class: Shapecode\Bundle\CRUDBundle\Cruding\Organizer
         public: false
+        arguments:
+            - "@shapecode_crud.manager_factory"
 
     shapecode_crud.action_manager:
         class: Shapecode\Bundle\CRUDBundle\Cruding\ActionManager
@@ -33,10 +40,12 @@ services:
         class: Shapecode\Bundle\CRUDBundle\Routing\CrudLoader
         public: false
         arguments: ['@shapecode_crud.crud_organizer']
-        tags: [ routing.loader ]
+        tags:
+            - { name: routing.loader }
 
     shapecode_crud.twig_extension.crud:
         class: Shapecode\Bundle\CRUDBundle\Twig\CRUDExtension
         public: false
         arguments: ['@translator']
-        tags: [ twig.extension ]
+        tags:
+            - { name: twig.extension }

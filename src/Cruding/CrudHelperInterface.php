@@ -51,4 +51,11 @@ interface CrudHelperInterface
      * @return AbstractCrudInterface
      */
     public function getCrud();
+
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function getManagerOption($name);
 }

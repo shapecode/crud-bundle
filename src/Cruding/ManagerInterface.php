@@ -35,4 +35,11 @@ interface ManagerInterface
      * @return ArrayCollection|AbstractCrudInterface[]
      */
     public function getCruds();
+
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function getOption($name);
 }

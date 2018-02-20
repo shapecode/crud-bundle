@@ -39,7 +39,8 @@ class CRUDExtension extends AbstractExtension
             new \Twig_SimpleFunction('crud_permission', [$this, 'hasPermission']),
             new \Twig_SimpleFunction('crud_current_action', [$this, 'currentAction']),
             new \Twig_SimpleFunction('crud_route', [$this, 'getRoute']),
-            new \Twig_SimpleFunction('crud_route_name', [$this, 'getRouteName'])
+            new \Twig_SimpleFunction('crud_route_name', [$this, 'getRouteName']),
+            new \Twig_SimpleFunction('crud_manager_option', [$this, 'getManagerOption']),
         ];
     }
 
@@ -107,6 +108,17 @@ class CRUDExtension extends AbstractExtension
     public function getRouteName(CrudHelperInterface $helper, $name)
     {
         return $helper->getRouteName($name);
+    }
+
+    /**
+     * @param CrudHelperInterface $helper
+     * @param                     $name
+     *
+     * @return string
+     */
+    public function getManagerOption(CrudHelperInterface $helper, $name)
+    {
+        return $helper->getManagerOption($name);
     }
 
     /**

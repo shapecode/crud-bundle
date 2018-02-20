@@ -99,4 +99,14 @@ class CrudHelper implements CrudHelperInterface
     {
         return $this->crud;
     }
+
+    /**
+     * @param $name
+     *
+     * @return mixed
+     */
+    public function getManagerOption($name)
+    {
+        return $this->manager->getOption($name);
+    }
 }

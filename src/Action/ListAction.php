@@ -246,6 +246,6 @@ class ListAction extends AbstractViewAction implements ActionInterface
      */
     public static function getRoute()
     {
-        return '/';
+        return '/list';
     }
 }

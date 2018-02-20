@@ -4,6 +4,7 @@ namespace Shapecode\Bundle\CRUDBundle\Cruding;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Shapecode\Bundle\CRUDBundle\Crud\AbstractCrudInterface;
+use Shapecode\Bundle\CRUDBundle\Factory\ManagerFactoryInterface;
 
 /**
  * Class Organizer
@@ -17,10 +18,15 @@ class Organizer implements OrganizerInterface
     /** @var ManagerInterface[] */
     protected $managers;
 
+    /** @var ManagerFactoryInterface */
+    protected $managerFactory;
+
     /**
+     * @param ManagerFactoryInterface $managerFactory
      */
-    public function __construct()
+    public function __construct(ManagerFactoryInterface $managerFactory)
     {
+        $this->managerFactory = $managerFactory;
         $this->managers = new ArrayCollection();
     }
 
@@ -30,7 +36,9 @@ class Organizer implements OrganizerInterface
     public function addCrud(AbstractCrudInterface $crud, $managerName = 'default')
     {
         if (!$this->hasManager($managerName)) {
-            $this->addManager(new Manager($managerName));
+            $manager = $this->managerFactory->create($managerName);
+
+            $this->addManager($manager);
         }
 
         $this->getManager($managerName)->addCrud($crud);
