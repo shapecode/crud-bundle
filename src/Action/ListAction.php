@@ -34,7 +34,6 @@ class ListAction extends AbstractViewAction implements ActionInterface
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'template_name'              => '@ShapecodeCRUD/Crud/list.html.twig',
             'sort_field_query_name'      => 'sort',
             'sort_field_name'            => 'p.id',
             'sort_direction_query_name'  => 'direction',

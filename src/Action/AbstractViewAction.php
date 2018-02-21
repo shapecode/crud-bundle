@@ -23,8 +23,8 @@ abstract class AbstractViewAction extends AbstractAction implements ViewActionIn
     {
         parent::configureOptions($resolver);
 
-        $resolver->setRequired([
-            'template_name'
+        $resolver->setDefaults([
+            'template_name' => null
         ]);
     }
 
